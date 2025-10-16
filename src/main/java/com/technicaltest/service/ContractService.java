@@ -7,8 +7,10 @@ import com.technicaltest.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -37,11 +39,7 @@ public class ContractService {
     }
 
     public List<Contract> getClientActiveContracts(Long clientId, LocalDate lastModifiedDate) {
-        if (!clientRepository.existsById(clientId)) {
-            throw new ResourceNotFoundException("Client not found with id: " + clientId);
-        }
-
-        List<Contract> activeContracts = contractRepository.findActiveByClientId(clientId);
+        List<Contract> activeContracts = this.getClientActiveContracts(clientId);
         
         if (!activeContracts.isEmpty() && lastModifiedDate != null) {
             activeContracts = activeContracts.stream()
@@ -50,6 +48,23 @@ public class ContractService {
         }
         
         return activeContracts;
+    }
+
+    public BigDecimal getClientTotalCostActiveContracts(Long clientId) {
+        List<Contract> activeContracts = this.getClientActiveContracts(clientId);
+
+        return activeContracts.stream()
+            .map(Contract::getCostAmount)
+            .filter(Objects::nonNull)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    private List<Contract> getClientActiveContracts(Long clientId) {
+        if (!clientRepository.existsById(clientId)) {
+            throw new ResourceNotFoundException("Client not found with id: " + clientId);
+        }
+
+        return contractRepository.findActiveByClientId(clientId);
     }
 
     public Contract getContract(Long id) {

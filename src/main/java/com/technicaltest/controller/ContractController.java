@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -46,5 +47,11 @@ public class ContractController {
             @PathVariable Long clientId,
             @RequestParam(required = false) LocalDate lastModifiedDate) {
         return contractService.getClientActiveContracts(clientId, lastModifiedDate);
+    }
+
+    @GetMapping("/active/cost-sum/{clientId}")
+    public BigDecimal getClientTotalCostActiveContracts(
+            @PathVariable Long clientId) {
+        return contractService.getClientTotalCostActiveContracts(clientId);
     }
 }
