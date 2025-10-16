@@ -12,6 +12,8 @@ import java.util.List;
 public interface ContractRepository extends JpaRepository<Contract, Long> {
     List<Contract> findByClientId(Long clientId);
     
-    @Query("SELECT c FROM Contract c WHERE c.clientId = :clientId AND c.endDate > CURRENT_DATE")
+    @Query("SELECT c FROM Contract c WHERE c.clientId = :clientId AND (c.endDate IS NULL OR c.endDate > CURRENT_DATE)")
     List<Contract> findActiveByClientId(@Param("clientId") Long clientId);
+
+    void deleteAllByClientId(Long cliendId);
 }

@@ -46,3 +46,16 @@ A Spring Boot 3.2.0 application with Java 21, PostgreSQL, and Swagger UI.
 ## API Documentation
 
 API documentation is available at `/swagger-ui.html` when the application is running.
+
+## Architecture
+
+I implemented this simple API using the MVC architecture.  
+I tried to keep the code as simple and clear as possible by using decorators to reduce boilerplate, implement properties validation and handle errors.
+About active contracts, I decided to include the one with null endDate as I think it is a valid case.
+
+## Proof it is working
+
+I have been able to create/update/delete/get clients then associate contracts. I am also able to create contracts without clients or endDate.
+When deleting the clients, all contract related get the current date as endDate and client is set to null.
+I can also get the sum cost of all active contracts for a client.
+You can find multiple screenshots showing the API in action.

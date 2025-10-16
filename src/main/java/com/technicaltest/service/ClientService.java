@@ -5,6 +5,7 @@ import com.technicaltest.model.Client;
 import com.technicaltest.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
 public class ClientService {
 
     private final ClientRepository clientRepository;
+    private final ContractService contractService;
 
     public List<Client> findAll() {
         return clientRepository.findAll();
@@ -38,10 +40,13 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
+    @Transactional
     public void delete(Long id) {
         if (!clientRepository.existsById(id)) {
             throw new ResourceNotFoundException("Client not found with id: " + id);
         }
+
+        contractService.endContractDateByCliendId(id);
         clientRepository.deleteById(id);
     }
 }

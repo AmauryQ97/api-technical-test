@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -70,5 +71,16 @@ public class ContractService {
     public Contract getContract(Long id) {
         return contractRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + id));
+    }
+
+    public void endContractDateByCliendId(Long clientId) {
+        List<Contract> activeContracts = this.getClientActiveContracts(clientId);
+
+        activeContracts.stream().forEach(contract -> {
+            contract.setEndDate(LocalDateTime.now());
+            contract.setClient(null);
+        });
+
+        contractRepository.saveAll(activeContracts);
     }
 }
