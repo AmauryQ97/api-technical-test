@@ -12,6 +12,7 @@ A Spring Boot 3.2.0 application with Java 21, PostgreSQL, and Swagger UI.
 ## Setup
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd api-technical-test
@@ -27,17 +28,19 @@ A Spring Boot 3.2.0 application with Java 21, PostgreSQL, and Swagger UI.
 ## Running the Application
 
 1. **Build the application**
+
    ```bash
    mvn clean install
    ```
 
 2. **Run the application**
+
    ```bash
    mvn spring-boot:run
    ```
 
 3. **Access the application**
-   - API Documentation: http://localhost:8080/swagger-ui.html
+   - API Documentation: http://localhost:8080/api/swagger-ui.html
    - Health Check: http://localhost:8080/api/health
 
 ## API Documentation
